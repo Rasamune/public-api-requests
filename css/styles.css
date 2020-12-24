@@ -14,9 +14,19 @@ html, body {
 }
 
 body {
-    font-family: "Nunito", sans-serif;
+    font-family: "Montserrat", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: #557a9f;
+}
+
+h1,
+h3 {
+    font-family: "Roboto Condensed", sans-serif;
+    color: #fff;
+}
+
+h3 {
+    color: #e5e697;
 }
 
 header {
@@ -30,7 +40,6 @@ header {
 
 header h1 {
     font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
     margin-top: 35px;
 }
 
@@ -87,11 +96,13 @@ header h1 {
     max-width: 360px;
     margin: 10px 10px 20px;
     padding: 10px;
-    background: rgba(245, 245, 245, 0.9);
+    background: #7395ae;
     border-radius: 0.25em;
-    border: 1px solid rgba(50, 50, 50, 0.3);
     transition: .4s ease-out;
     overflow: hidden;
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.3);
 }
 
 .card-img {
@@ -109,8 +120,8 @@ header h1 {
 }
 
 .card-text {
-    font-size: 0.9em;
-    color: rgba(50, 50, 50, 0.7);
+    font-size: 0.8em;
+    color: #fff;
     margin: 7px auto;
     transition: .4s ease-out;
 }
@@ -140,7 +151,7 @@ header h1 {
     min-height: 415px;
     margin: 10px auto auto;
     padding-bottom: 15px;
-    background: rgba(255, 255, 255, 1);
+    background: #7395ae;
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
     transition: .4s ease-out;
@@ -169,7 +180,7 @@ header h1 {
 }
 
 .modal-text {
-    color: rgba(50, 50, 50, 0.7);
+    color: #fff;
     margin: 10px;
 }
 
@@ -188,7 +199,7 @@ header h1 {
     max-width: 420px;
     padding: 10px 15px 15px;;
     margin: 10px auto auto;
-    background: rgba(255, 255, 255, 1);
+    background: #7395ae;
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
 }
@@ -201,7 +212,7 @@ header h1 {
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.9);
     padding: 0.75em 1.5em;
-    background: rgba(0, 0, 0, 0.8);
+    background: #557a9f;
     border-radius: 0.35em;
     transition: .4s ease-out;
     outline: none;
