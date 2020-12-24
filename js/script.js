@@ -2,7 +2,9 @@
 // Global Variables
 // -----------------
 const gallery = document.getElementById('gallery');
+const search = document.querySelector('.search-container');
 let employeeList = {};
+let searchedList = {};
 
 /**
  * Check the status of the URL and convert it to JSON, console log errors
@@ -33,7 +35,8 @@ function checkStatus(response) {
 
 fetchData('https://randomuser.me/api/?results=12&nat=us')
     .then(saveEmployeeList)
-    .then(generateCards);
+    .then(generateCards)
+    .then(generateSearch);
 
 /**
  * Save Employee list object to the employees variable
@@ -41,6 +44,7 @@ fetchData('https://randomuser.me/api/?results=12&nat=us')
  */
 function saveEmployeeList(data) {
     employeeList = data;
+    searchedList = employeeList;
     return data;
 }
 
@@ -65,7 +69,7 @@ function generateCards(data) {
         `;
         gallery.insertAdjacentHTML('beforeend', cardHTML);
         gallery.lastElementChild.addEventListener('click', e => {
-            const index = employeeList.results.indexOf(employee);
+            const index = searchedList.results.indexOf(employee);
             generateModal(employee, index);
         });
     });
@@ -76,7 +80,9 @@ function generateCards(data) {
  * @param {Object} data The data of the employee card currently clicked
  */
 function generateModal(data, index) {
-    const employee = data;
+    const employee = data;    
+    const dob = new Date(employee.dob.date);
+
     const modalHTML = `
         <div class="modal-container">
             <div class="modal">
@@ -89,7 +95,7 @@ function generateModal(data, index) {
                     <hr>
                     <p class="modal-text">${employee.phone}</p>
                     <p class="modal-text">${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
-                    <p class="modal-text">Birthday: 10/21/2015</p>
+                    <p class="modal-text">Birthday: ${dob.getMonth() + 1}/${dob.getDate()}/${dob.getFullYear()}</p>
                 </div>
             </div>
 
@@ -102,26 +108,26 @@ function generateModal(data, index) {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
     // If there is no next employee
-    if (!employeeList.results[index+1]) {
+    if (!searchedList.results[index+1]) {
         // Remove the next button
-        document.querySelector('#modal-next').remove();
+        document.querySelector('#modal-next').style.visibility = 'hidden';
     } else {
         // Else add event listener to next button
         document.querySelector('#modal-next').addEventListener('click', () => {
             removeModal();
-            generateModal(employeeList.results[index+1], index+1);
+            generateModal(searchedList.results[index+1], index+1);
         });
     }
 
     // If there is no previous employee
-    if (!employeeList.results[index-1]) {
+    if (!searchedList.results[index-1]) {
         // Remove the previous button
-        document.querySelector('#modal-prev').remove();
+        document.querySelector('#modal-prev').style.visibility = 'hidden';
     } else {
         // Else add event listener to previous button
         document.querySelector('#modal-prev').addEventListener('click', () => {
             removeModal();
-            generateModal(employeeList.results[index-1], index-1);
+            generateModal(searchedList.results[index-1], index-1);
         });
     }
 
@@ -132,4 +138,18 @@ function generateModal(data, index) {
 
 function removeModal() {
     document.querySelector('.modal-container').remove();
+}
+
+// ---------------------------
+// Add Search Form
+// ---------------------------
+
+function generateSearch() {
+    const searchHTML = `
+        <form action="#" method="get">
+            <input type="search" id="search-input" class="search-input" placeholder="Search...">
+            <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+        </form>
+    `;
+    search.insertAdjacentHTML('beforeend', searchHTML);
 }
