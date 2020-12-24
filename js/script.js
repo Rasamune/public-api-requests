@@ -100,19 +100,33 @@ function generateModal(data, index) {
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // If there is no next employee
+    if (!employeeList.results[index+1]) {
+        // Remove the next button
+        document.querySelector('#modal-next').remove();
+    } else {
+        // Else add event listener to next button
+        document.querySelector('#modal-next').addEventListener('click', () => {
+            removeModal();
+            generateModal(employeeList.results[index+1], index+1);
+        });
+    }
+
+    // If there is no previous employee
+    if (!employeeList.results[index-1]) {
+        // Remove the previous button
+        document.querySelector('#modal-prev').remove();
+    } else {
+        // Else add event listener to previous button
+        document.querySelector('#modal-prev').addEventListener('click', () => {
+            removeModal();
+            generateModal(employeeList.results[index-1], index-1);
+        });
+    }
 
     document.querySelector('#modal-close-btn').addEventListener('click', () => {
         removeModal();
-    });
-
-    document.querySelector('#modal-next').addEventListener('click', () => {
-        removeModal();
-        generateModal(employeeList.results[index+1], index+1);
-    });
-
-    document.querySelector('#modal-prev').addEventListener('click', () => {
-        removeModal();
-        generateModal(employeeList.results[index-1], index-1);
     });
 }
 
