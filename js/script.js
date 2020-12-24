@@ -2,9 +2,13 @@
 // Global Variables
 // -----------------
 const gallery = document.getElementById('gallery');
-const search = document.querySelector('.search-container');
+const searchBar = document.querySelector('.search-container');
 let employeeList = {};
 let searchedList = {};
+
+// ---------------------------
+// Fetch Data
+// ---------------------------
 
 /**
  * Check the status of the URL and convert it to JSON, console log errors
@@ -29,12 +33,8 @@ function checkStatus(response) {
     }
  }
 
-// ---------------------------
-// Fetch Data & Generate Cards
-// ---------------------------
-
 fetchData('https://randomuser.me/api/?results=12&nat=us')
-    .then(saveEmployeeList)
+    .then(saveEmployeeLists)
     .then(generateCards)
     .then(generateSearch);
 
@@ -42,18 +42,22 @@ fetchData('https://randomuser.me/api/?results=12&nat=us')
  * Save Employee list object to the employees variable
  * @param {Object} data Object holding all of the employee names 
  */
-function saveEmployeeList(data) {
+function saveEmployeeLists(data) {
     employeeList = data;
-    searchedList = employeeList;
-    return data;
+    searchedList = employeeList.results;
+    return searchedList;
 }
+
+// ---------------------------
+// Generate Cards
+// ---------------------------
 
 /**
  * Generate the HTML for each employee card
  * @param {Object} data JSON Object provided by fetchData
  */
 function generateCards(data) {
-    data.results.map(employee => {
+    data.map(employee => {
         // Add Card HTML
         const cardHTML = `
             <div class="card">
@@ -69,7 +73,7 @@ function generateCards(data) {
         `;
         gallery.insertAdjacentHTML('beforeend', cardHTML);
         gallery.lastElementChild.addEventListener('click', e => {
-            const index = searchedList.results.indexOf(employee);
+            const index = searchedList.indexOf(employee);
             generateModal(employee, index);
         });
     });
@@ -108,26 +112,26 @@ function generateModal(data, index) {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
     // If there is no next employee
-    if (!searchedList.results[index+1]) {
+    if (!searchedList[index+1]) {
         // Remove the next button
         document.querySelector('#modal-next').style.visibility = 'hidden';
     } else {
         // Else add event listener to next button
         document.querySelector('#modal-next').addEventListener('click', () => {
             removeModal();
-            generateModal(searchedList.results[index+1], index+1);
+            generateModal(searchedList[index+1], index+1);
         });
     }
 
     // If there is no previous employee
-    if (!searchedList.results[index-1]) {
+    if (!searchedList[index-1]) {
         // Remove the previous button
         document.querySelector('#modal-prev').style.visibility = 'hidden';
     } else {
         // Else add event listener to previous button
         document.querySelector('#modal-prev').addEventListener('click', () => {
             removeModal();
-            generateModal(searchedList.results[index-1], index-1);
+            generateModal(searchedList[index-1], index-1);
         });
     }
 
@@ -141,7 +145,7 @@ function removeModal() {
 }
 
 // ---------------------------
-// Add Search Form
+// Generate Search Form
 // ---------------------------
 
 function generateSearch() {
@@ -151,5 +155,26 @@ function generateSearch() {
             <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
         </form>
     `;
-    search.insertAdjacentHTML('beforeend', searchHTML);
+    searchBar.insertAdjacentHTML('beforeend', searchHTML);
+    
+    searchBar.addEventListener('keyup', (e) => {
+        e.preventDefault();
+        search(searchBar.querySelector('#search-input').value);
+    });
+    searchBar.addEventListener('submit', () => {
+        e.preventDefault();
+        search(searchBar.querySelector('#search-input').value);
+    });
+}
+
+/**
+ * Search for the employees that match the search bar string
+ * @param {String} string The search bar string to be filtered
+ */
+function search(string) {
+    searchedList = employeeList.results.filter(employee => 
+                    employee.name.first.toLowerCase().includes(string) ||
+                    employee.name.last.toLowerCase().includes(string));
+    gallery.innerHTML = '';
+    generateCards(searchedList);
 }
