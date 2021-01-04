@@ -9,4 +9,4 @@ The search bar allows you to filter and display members by letters in their firs
 
  Added extra styling to the app
  - Changed color scheme to blue, with yellow names and white text
- - Changed fonts to Roboto Condensed and Monstserrat
+ - Changed fonts to Roboto Condensed and Montserrat
