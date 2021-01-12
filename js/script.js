@@ -161,7 +161,7 @@ function generateSearch() {
         e.preventDefault();
         search(searchBar.querySelector('#search-input').value);
     });
-    searchBar.addEventListener('submit', () => {
+    searchBar.addEventListener('submit', (e) => {
         e.preventDefault();
         search(searchBar.querySelector('#search-input').value);
     });
